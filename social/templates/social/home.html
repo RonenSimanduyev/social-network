@@ -1,0 +1,73 @@
+{%extends 'main.html'%}
+
+<!-- search  -->
+{% block content %}
+{%for profile in all_profiles%}
+<div class="card">
+  <a href="{% url 'profile' profile.user.username %}">{{profile.first_name}} {{profile.last_name}}</a>
+</div>
+{%endfor%}
+<!-- posts  -->
+  {%for post in posts%}
+  <div style="border: solid rgb(20, 73, 196) 2px; width: 650px; margin-bottom: 15px; position: relative bo;">
+    <div class="card-body">
+      <img class="post-photo" src="{{post.user.profile_img}}" alt="">
+      <a href="{% url 'profile' post.user.user.username %}"><h3 style="position: relative; left: 80px; bottom: 50px;">{{post.user.first_name}} {{post.user.last_name}}</h3></a>
+      <h6> {{post.created}}</h6>
+      <p class="card-text">{{post.body}}</p>
+      <div>
+        {% if post.post_img %}
+        <img style=" width:500px;height: 300px; " src="{{post.post_img}}" class="card-img-top" alt="...">
+        {%endif%}
+
+      </div>
+<!-- like section -->
+      <form action="{%url 'like' user.username post.id%}" method="post">
+        {%csrf_token%}
+        {% if post.liked %}
+        <input style="position:relative;left:550px;bottom: 40px;" type="submit" class="btn btn-primary" value="unlike">
+      
+        {%else%}
+        <input style="position:relative;left:550px;bottom: 40px;" type="submit" class="btn btn-primary" value="like">
+        {%endif%}
+        <input type="hidden" name="next" value="{{request.path}}">
+      </form>
+      
+      <p style="position:relative;left:470px;">{{post.likes.count}} people liked this</p>
+  
+  
+    </div>
+
+    <!-- comment section -->
+    <section style="padding: 0 1rem">
+      {% for comment in post.comments%}
+      <div style="padding: 0.5rem; border:1px #ababab solid ;" class="mb-3">
+        <div style="display:flex;">
+          <h5 style="font-size:1rem;">{{comment.user.first_name}} {{comment.user.last_name}}</h5>
+          <div style="flex-grow:1"></div>
+
+          {%if comment.user.user.username == request.user.username%}
+
+          <a href="{%url 'EditComment' user.username comment.id%} ">edit comment</a>
+          {%endif%}
+        </div>
+        <p>{{comment.body}}</p>
+      </div>
+      {%endfor%}
+      <div class="mb-3">
+        <form action="{%url 'Comment' user.username post.id%}" method="post" >
+          {%csrf_token%}
+          <label for="" class="form-label">comment</label>
+          <textarea class="form-control" name="body" id="" rows="2"></textarea>
+          <input style="margin-top: 10px;" type="submit" class="btn btn-primary" value="upload">  
+          <input type="hidden" name="next" value="{{request.path}}">  
+        </form>
+      </div>
+    </div>
+
+  {%endfor%}
+  </section>
+
+</div>
+
+{% endblock %}

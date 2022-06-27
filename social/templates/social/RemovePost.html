@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{%block content%}
+
+<div class="card text-white bg-danger mb-3" >
+    <div class="card-header">would you like to delete this post?</div>
+    <div class="card-body">
+        <form  method="post" action="">           
+            {% csrf_token%}
+            <input type="submit" class="btn btn-danger active" value="yes"/>
+            <a href="{%url 'home' user.username%}" class="btn">no</a>
+        </form>
+    </div>
+</div>
+{%endblock%}

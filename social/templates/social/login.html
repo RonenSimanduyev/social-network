@@ -1,0 +1,27 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+
+<form action="" method="post">
+    {%csrf_token%}
+    <div class="mb-3">
+        <label for="" class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" id="" placeholder="username">
+      </div>
+
+      <div class="mb-3">
+        <label for="" class="form-label">Password </label>
+        <input type="password" name="password" class="form-control" id="" placeholder="password">
+      </div>
+      {%if error %}
+      <div style= "padding:0px" class="card-body text-danger">
+        {{error}}
+      </div>
+      
+      {%endif%}
+      <br>
+      <input type="submit" value="login" class="btn btn-primary">
+</form>
+
+{% endblock %}

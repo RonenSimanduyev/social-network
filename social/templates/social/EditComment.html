@@ -1,0 +1,19 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+
+<div class="mb-3">
+    <form action="" method="post" >
+      {%csrf_token%}
+      <label for="" class="form-label">comment</label>
+      <textarea class="form-control" name="body" id="" rows="2">{{comment.body}}</textarea>
+      <input type="submit" class="btn btn-primary" value="upload">  
+      <input type="hidden" name="next" value="{{request.path}}">  
+      <a href="{%url 'home' request.user.username %}" class="btn btn-primary">cancel</a>
+      <a href="{%url 'CommentRemove' request.user.username comment.id%}" class="btn btn-danger">delete</a>
+
+
+    </form>
+  </div>
+{% endblock %}

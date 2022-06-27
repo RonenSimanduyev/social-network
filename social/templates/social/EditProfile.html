@@ -1,0 +1,49 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+
+    <div>
+        <h3>{{profile.first_name}} {{profile.last_name}}</h3>
+    </div>
+
+    <form action="" method="post">
+        {%csrf_token%}
+
+        <div class="mb-3">
+            <label for="" class="form-label">city</label>
+            <textarea class="form-control" name="city" id="" rows="1">{{profile.city}}</textarea>
+
+            <div class="mb-3">
+                <label for="" class="form-label">profile-img</label>
+                <textarea class="form-control" name="profile_img" id="" rows="1">{{profile.profile_img}}</textarea>
+
+        <div class="mb-3">
+            <label for="" class="form-label">background-img</label>
+            <textarea class="form-control" name="background_img" id="" rows="1">{{profile.background_img}}</textarea>
+        </div>
+
+
+
+        <p>what is your status?</p>
+    
+        <div >
+        <input class="form-check-input" type="radio" value="off" name="relationship" id="singel" {%if profile.relationship  == False%} checked {%endif %}>
+        <label class="form-check-label" for="singel">
+            singel
+        </label>
+        <input class="form-check-input" type="radio" value="on" name="relationship" id="taken" {%if profile.relationship  == True%} checked {%endif %}>
+        <label class="form-check-label" for="taken">
+            taken
+        </label>
+        </div>
+
+        <br>
+        <input style="margin-top: 10px; " type="submit" class="btn btn-primary" value="update"> 
+    </form>   
+    <a href="{%url 'profile' user.username%}"class="btn btn-primary" style="margin-top: 10px;" >cancel</a>
+    <a href="{%url 'RemoveProfile' request.user.username%}"class="btn btn-danger" style="margin-top: 10px;" >delete profile</a>
+    </div>
+
+  
+{% endblock %}

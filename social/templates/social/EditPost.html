@@ -1,0 +1,36 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+
+<div style="border: solid rgb(20, 73, 196) 2px; width: 100%; margin-bottom: 15px;">
+    <div class="card-body">
+      <img class="post-photo" src="{{profile.profile_img}}" alt="">
+      <h3 style="position: relative; left: 80px; bottom: 50px;"> {{profile.first_name}} {{profile.last_name}}</h3>
+      
+      <form action="" method="post">
+        {%csrf_token%}
+        
+          <label for="" class="form-label">edit body</label>
+          <textarea name="body"  class="form-control" id="" rows="2">{{post.body}}</textarea>
+        
+      
+        
+        
+          <label for="" class="form-label">imageUrl</label>
+          <input name="post_img" value="{{post.post_img}}" type="text" class="form-control" id="" placeholder="">
+
+        <input style="margin-top: 1rem;" type="submit" class="btn btn-primary" value="update"> 
+      
+        <a href="{%url 'home' user.username %}" style="margin-top: 1rem;" class="btn btn-primary">cancel</a>
+        <input type="hidden" name="next" value="{{next}}">
+        <a href="{%url 'PostRemove' post.id request.user.username %}" style="margin-top: 1rem;" class="btn btn-danger">delete</a>
+
+      </form>  
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

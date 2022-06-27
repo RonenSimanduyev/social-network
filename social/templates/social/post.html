@@ -1,0 +1,30 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+
+
+<div style="border: solid rgb(20, 73, 196) 2px; width: 100%; margin-bottom: 15px;">
+    <div class="card-body">
+      <img class="post-photo" src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=620&quality=45&auto=format&fit=max&dpr=2&s=6fe0ebd22151102996062fa1287f824c" alt="">
+      <h3 style="position: relative; left: 80px; bottom: 50px;"> username</h3>
+      <h6>created 5 minuents ago</h6>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <div>
+        <img style=" width:500px;height: 300px; " src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=620&quality=45&auto=format&fit=max&dpr=2&s=6fe0ebd22151102996062fa1287f824c" class="card-img-top" alt="...">
+      
+      </div>
+      <input name='like' style="position:relative;left:550px;bottom: 0px;" type="submit" class="btn btn-primary" value="like">
+      <p style="position:relative;left:470px;">10 people liked this</p>
+    </div>
+    <div class="mb-3">
+      <div style="position: relative; bottom: 50px;">
+        <label for="" class="form-label">comment</label>
+        <textarea class="form-control" id="" rows="2"></textarea>
+        <input style="margin-top: 10px;" type="submit" class="btn btn-primary" value="upload">    
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

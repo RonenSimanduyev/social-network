@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-light" style="font-weight: bold;  margin-bottom: 0.5rem;" >
+  <div style="background-color: rgb(119, 165, 235); border-radius: 5px;" class="container-fluid">
+    <div class="navbar-brand" style="color: rgb(35, 80, 243)">social</div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+    </button>
+    {%if user.is_authenticated %}
+    <div style="color: rgb(35, 80, 243)" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'home' user.username%}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'profile' request.user.username%}">profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">logout</a>
+        </li>
+
+      </ul>
+      <form class="d-flex" role="search" method="get" action="{%url 'search'%}">
+        <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+    {%else%}
+    <div style="color: rgb(35, 80, 243)" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">signup</a>
+        </li>
+      </ul>
+    </div>
+    {%endif%}
+  </div>
+</nav>

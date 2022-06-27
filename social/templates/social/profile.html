@@ -1,0 +1,188 @@
+{%extends 'main.html'%}
+
+
+{% block content %}
+<!-- profile container -->
+<div style="position:relative;border: 0px;" class="card mb-3">
+<!-- user details -->
+  <div style="position:absolute; top :0px;left:0px; padding-top: 15%;padding-left: 5%;display: flex; z-index: 3;width: 100%;height: 100%;">
+    <img class="profile-img"  src="{{profile.profile_img}}" alt="">
+    <h5 style="padding-top: 2rem;padding-left: 1rem;" class="user-text">{{profile.first_name}} {{profile.last_name}}</h5>
+    <!-- follow -->
+    {%if request.user.id != user.id%}
+    <form style="padding-top:1.5rem;padding-left:2rem;" action="{% url 'friend' user.username %}" method="post">
+      {%csrf_token%}
+      {%if not is_friend%}
+        <input type="submit" value="follow" class="btn btn-primary">
+        <input type="hidden" name="next" value="{{request.path}}">
+     {%else%}
+        <input type="submit" value="unfollow" class="btn btn-primary">
+        <input type="hidden" name="next" value="{{request.path}}">
+     {%endif%}
+    </form>
+      
+    {%endif%}
+  </div>
+  {%if request.user.id == user.id%}
+    <a href="{%url 'EditProfile' user.username%}" class="btn btn-primary" style="width:130px ;height: 40px;position: absolute;top: 240px;left:930px;z-index: 5; " >edit profile</a>  
+  {%endif%}
+
+  <img class="back-img" src="{{profile.background_img}}" class="card-img-top" alt="...">
+</div>
+
+
+
+<!-- navbar -->
+<nav class="navbar navbar-light" style="background-color: #e3f2fd; font-weight: bold; height: 50px; margin-bottom: 2rem;">
+</nav>
+
+
+<!-- main content container -->
+<div style="width:100%;display:flex">
+
+  <!-- timeline feed -->
+  <div style="min-width: 650px;">
+<!-- new post  -->
+    {%if request.user.id == user.id%}
+
+    <form style="max-width:650px; margin: 2rem 0;" action="{% url 'NewPost' user.username %}" method="post">
+      {% csrf_token%}
+
+<!-- shere post  -->
+        <label  class="form-label">what do you want to share?</label>
+        <textarea name="body" class="form-control"  rows="3"></textarea>
+
+        <label for="" class="form-label">post image Url</label>
+        <input name="post_img" type="text" class="form-control" id="" placeholder=""> <br>
+        
+      <input type="submit" value="upload"  class="btn btn-primary">
+
+      <input type="hidden" name="next" value="{{request.path}}">
+
+    </form>
+    {%endif%}
+
+
+
+    <!-- post -->
+    {%for post in posts%}
+    <div style="border: solid rgb(20, 73, 196) 2px; width: 650px; margin-bottom: 15px; position: relative bo;">
+      <div class="card-body">
+        <img class="post-photo" src="{{profile.profile_img}}" alt="">
+        <h3 style="position: relative; left: 80px; bottom: 50px;">{{profile.first_name}} {{profile.last_name}}</h3>
+        {% if request.user.username == user.username%}
+        <a href="{% url 'EditPost' post.id %}?next={{request.path}}" style="position:relative;left:550px; bottom:100px;" class="btn btn-primary" >edit</a>
+        {%endif%}
+        <h6> {{post.created}}</h6>
+        <p class="card-text">{{post.body}}</p>
+        <div>
+          {% if post.post_img %}
+          <img style=" width:500px;height: 300px; " src="{{post.post_img}}" class="card-img-top" alt="...">
+          {%endif%}
+
+        </div>
+
+        <form action="{%url 'like' user.username post.id%}" method="post">
+          {%csrf_token%}
+          {% if post.liked %}
+          <input name='like' style="position:relative;left:550px;bottom: 40px;" type="submit" class="btn btn-primary" value="unlike">
+         
+          {%else%}
+          <input name='like' style="position:relative;left:550px;bottom: 40px;" type="submit" class="btn btn-primary" value="like">
+          {%endif%}
+          <input type="hidden" name="next" value="{{request.path}}">
+        </form>
+      
+        
+        <p style="position:relative;left:470px;">{{post.likes.count}} people liked this</p>
+
+     
+     
+      </div>
+
+      <!-- comment section -->
+      <section style="padding: 0 1rem">
+        {% for comment in post.comments%}
+        <div style="padding: 0.5rem; border:1px #ababab solid ;" class="mb-3">
+          <div style="display:flex;">
+            <h5 style="font-size:1rem;">{{comment.user.first_name}} {{comment.user.last_name}}</h5>
+            <div style="flex-grow:1"></div>
+
+            {%if comment.user.user.username == request.user.username%}
+
+            <a href="{%url 'EditComment' user.username comment.id%} ">edit comment</a>
+            {%endif%}
+          </div>
+          <p>{{comment.body}}</p>
+        </div>
+        {%endfor%}
+        <div class="mb-3">
+          <form action="{%url 'Comment' user.username post.id%}" method="post" >
+            {%csrf_token%}
+            <label for="" class="form-label">comment</label>
+            <textarea class="form-control" name="body" id="" rows="2"></textarea>
+            <input style="margin-top: 10px;" type="submit" class="btn btn-primary" value="upload">  
+            <input type="hidden" name="next" value="{{request.path}}">  
+          </form>
+        </div>
+      </div>
+  
+    {%endfor%}
+      </section>
+ 
+  </div>
+
+  {% if request.user.username == user.username%}
+  <!-- friends side navigation -->
+<div  style="position: sticky;top: 0;  width: 450px; height: 400px; margin-top: 1rem;" >
+<!-- header -->
+  <h2 style="color: rgb(14, 34, 152); font-weight: bold;text-align: center; margin-bottom: 20px;" > {{profile.first_name}} follows:</h2>
+<!-- row container -->
+<div style="display:flex;flex-direction: column;">
+<!-- first row -->
+
+  {%for friends in friend_list3%}
+  <div style="display: flex;">
+
+    {%for friend in friends%}
+    <div  class="con" style="margin-left: 25px; margin-bottom: 5%;">
+      <img src="{{friend.profile_img}}" alt="" class="image">
+      <div class="middle">
+        <div style="width: 30px;height: 30px;" >{{friend.first_name}} {{friend.last_name}}</div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+  {%endfor%}
+{%endif%}
+
+<!-- info row -->
+<div class="con" style="margin-left: 25px;"  class="card text-dark bg-light mb-3" >
+
+  <div style="width: 400px; font-size: 20px; margin-top: 2rem;" class="card-header">info</div>
+  <div class="card-body">
+    <p class="card-text">      
+      {{profile.first_name}} {{profile.last_name}} <br>
+      lives in {{profile.city}} <br>
+      born on {{profile.dob}} <br>
+      {%if profile.relationship == True%}
+        in a relationship
+      {%elif profile.relationship == False%}
+        singel
+      {%endif%}
+    </p>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+  
+ 
+
+
+</div>
+
+
+{% endblock %} 
